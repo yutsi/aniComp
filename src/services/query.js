@@ -2,13 +2,55 @@ import { gql, GraphQLClient } from 'graphql-request'
 const _ = require("lodash")
 
 
-// TODO: combineLists returns empty the first time button is clicked.
 // TODO : make mediaType work with ANIME or MANGA, query fails using those as a string. Could just use if-else for showsQuery
-// TODO: Convert 5-point scale rating to 10-point
 const client = new GraphQLClient('https://graphql.anilist.co')
 
+const getScoreFormat = async (user) => {
+  const variables = {
+    userName: user
+  }
+  const showsQuery = gql`
+    query getScoreFormat($userName: String!)
+    {
+      User (name:$userName){
+       mediaListOptions {
+         scoreFormat
+       }
+     }
+   }`
+
+  const data = await client.request(showsQuery, variables)
+  const scoreFormat = data.User.mediaListOptions.scoreFormat
+  console.log(`Score format for ${user} is ${scoreFormat}`)
+  if (scoreFormat == "POINT_10" || scoreFormat == "POINT_10_DECIMAL" ) {
+    return 1
+  } 
+  if (scoreFormat == "POINT_100") {
+    return 0.1
+  }
+  if (scoreFormat == "POINT_5") {
+    return 2
+  }
+  if (scoreFormat == "POINT_3") {
+    return 3.33
+}
+}
+const convertScores = async (user1, user2, combined) => {                           // Convert scores to 10-point scale and round to nearest tenth
+  const multiplyFactor1 = await getScoreFormat(user1)
+  const multiplyFactor2 = await getScoreFormat(user2)
+  if (multiplyFactor1 === 1 && multiplyFactor2 ===1) {
+    return combined
+  }
+  for (const i of combined) {
+    let newScore1 = i.score1 * multiplyFactor1
+    _.assign(i, ({ score1: newScore1 }))
+    let newScore2 = i.score2 * multiplyFactor2
+    _.assign(i, ({ score2: newScore2 }))
+  }
+  return combined
+}
+
 const getShowList = async (user, userNum) => {
-  console.log(user)
   const variables = {
     userName: user
   }
@@ -31,7 +73,6 @@ const getShowList = async (user, userNum) => {
 }
 
 const flatten = async (data, userNum) => {
-  // return Object.entries(data.MediaListCollection.lists[0].entries)
   const flattened = []
   const parentArray = Object.entries(data.MediaListCollection.lists[0].entries) // Not getting stuff from Dropped list
   parentArray.forEach(arr => {
@@ -67,7 +108,8 @@ const combineLists = async (user1, user2) => {
       i--
     }
   }
-  const combinedEnglish = await replaceShowTitles(combined)
+  const combinedConvertedScores = await convertScores(user1, user2, combined)
+  const combinedEnglish = await replaceShowTitles(combinedConvertedScores)
   console.log('combined', combinedEnglish)
   return combinedEnglish
 }

@@ -67,6 +67,7 @@ const App = () => {
       <div className='content-wrap'>
         <div className='entry-area'>
           <h1>Compare media lists of two AniList users</h1>
+          <div className="description">Scores are converted to a 10-point scale.</div>
           <form className='add-table' onSubmit={compareUsers}>
             <div className='row'>
               <label htmlFor='enter user1' className='new-entry-label'>
