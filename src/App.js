@@ -114,7 +114,7 @@ const App = () => {
         <div className='footer'>
           {// TODO: Github link here
 }
-          This website was made by yutsi using React. Check it out on Github.
+          This website was made by yutsi using React. Check it out on <a href="https://github.com/yutsi/aniComp">Github</a>.
         </div>
       </footer>
     </div>
