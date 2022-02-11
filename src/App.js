@@ -60,10 +60,6 @@ const App = () => {
         setMessage(err)
         setErrorBool(true)
       })
-
-      const combined2 = combined.filter((media) => Math.abs(media.score1 - media.score2) <= 1)
-      console.log('combined-filtered ', combined2) 
-
   }
 
   return (
@@ -100,7 +96,7 @@ const App = () => {
           Agree
           <table>
             <tbody>
-              {combined.filter((media) => Math.abs(media.score1 - media.score2) <= 1 )
+              {combined.filter((media) => media.scoreDifference <= 1 )
               .map((media) => <Media key={media.mediaId} media={media} user1={user1} user2={user2} /> )}
             </tbody>
           </table>
@@ -108,7 +104,7 @@ const App = () => {
           Disagree
           <table>
             <tbody>
-            {combined.filter((media) => Math.abs(media.score1 - media.score2) > 1 )
+            {combined.filter((media) => media.scoreDifference > 1 )
               .map((media) => <Media key={media.mediaId} media={media} user1={user1} user2={user2} /> )}
             </tbody>
           </table>
