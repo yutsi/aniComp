@@ -1,5 +1,6 @@
 import { request, gql, GraphQLClient } from 'graphql-request'
-let unionBy = require('lodash.unionby')
+const _ = require("lodash")
+
 
 // TODO: combineLists returns empty the first time button is clicked.
 // TODO : make mediaType work with ANIME or MANGA, query fails using those as a string
@@ -67,8 +68,14 @@ const combineLists = async (user1, user2) => {
   //   }
   // }
 
-  //TODO: lodash unionby merge
-  const combined = { ...user1list, ...user2list }
+  const merged = _.merge(_.keyBy(user1list, 'mediaId'), _.keyBy(user2list, 'mediaId'))
+  const combined = _.values(merged)
+  for (let i = 0; i < combined.length; i++) {           // remove entries with scores from only one user
+    if (!combined[i].score1 || !combined[i].score2) {
+      combined.splice(i, 1)
+      i--
+    }
+  }
   return combined
 }
 
