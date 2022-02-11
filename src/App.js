@@ -4,8 +4,8 @@ import Media from './components/Media'
 import { combineLists} from './services/query'
 
 const App = () => {
-  const [user1, setuser1] = useState('yutsi')
-  const [user2, setuser2] = useState('vinny')
+  const [user1, setuser1] = useState('')
+  const [user2, setuser2] = useState('')
   const [combined, setcombined] = useState([])
   const [checked, setchecked] = useState(true)
   const [mediaType, setmediaType] = useState('ANIME')
