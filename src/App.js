@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Notification from './components/Notification'
-import { getShowTitle, getShowList, combineLists } from './services/query'
+import Media from './components/Media'
+import { combineLists} from './services/query'
 
 const App = () => {
   const [user1, setuser1] = useState('yutsi')
   const [user2, setuser2] = useState('vinny')
-  const [user1Shows, setuser1Shows] = useState([])
-  const [user2Shows, setuser2Shows] = useState([])
   const [combined, setcombined] = useState([])
   const [checked, setchecked] = useState(true)
   const [mediaType, setmediaType] = useState('ANIME')
@@ -51,22 +50,20 @@ const App = () => {
     return true
   }
 
-  const compareUsers = (event) => {
+  const compareUsers = async (event) => {
     event.preventDefault()
     console.log(`Comparing ${user1} and ${user2}`)
-    combineLists(user1, user2).then(data => {
+    await combineLists(user1, user2).then(data => {
       setcombined(data)
-      console.log('combined ', combined)
     })
       .catch((err) => {
         setMessage(err)
         setErrorBool(true)
       })
-    // const sameShows = user1ShowsArray.filter(user1ShowsArray.filter(shows1 => user2ShowsArray.some(shows2 => user1ShowsArray.mediaID === user2ShowsArray.mediaID)))
 
-    // console.log(sameShows)
+      const combined2 = combined.filter((media) => Math.abs(media.score1 - media.score2) <= 1)
+      console.log('combined-filtered ', combined2) 
 
-    // getShowTitle(idofShow)
   }
 
   return (
@@ -100,17 +97,19 @@ const App = () => {
 
         <div className='compare-area'>
           <h2>{user1} vs. {user2}</h2>
+          Agree
           <table>
-            <thead>
-              <tr>
-                <th>Agree</th>
-                <th>Disagree</th>
-              </tr>
-            </thead>
             <tbody>
-              <tr>
-                <td>test</td>
-              </tr>
+              {combined.filter((media) => Math.abs(media.score1 - media.score2) <= 1 )
+              .map((media) => <Media key={media.mediaId} media={media} user1={user1} user2={user2} /> )}
+            </tbody>
+          </table>
+
+          Disagree
+          <table>
+            <tbody>
+            {combined.filter((media) => Math.abs(media.score1 - media.score2) > 1 )
+              .map((media) => <Media key={media.mediaId} media={media} user1={user1} user2={user2} /> )}
             </tbody>
           </table>
         </div>
@@ -119,7 +118,7 @@ const App = () => {
         <div className='footer'>
           {// TODO: Github link here
 }
-          This website was made by yutsi using React. Check it out on <a href=''>Github</a>.
+          This website was made by yutsi using React. Check it out on Github.
         </div>
       </footer>
     </div>

@@ -1,9 +1,9 @@
-import { request, gql, GraphQLClient } from 'graphql-request'
+import { gql, GraphQLClient } from 'graphql-request'
 const _ = require("lodash")
 
 
 // TODO: combineLists returns empty the first time button is clicked.
-// TODO : make mediaType work with ANIME or MANGA, query fails using those as a string
+// TODO : make mediaType work with ANIME or MANGA, query fails using those as a string. Could just use if-else for showsQuery
 // TODO: Convert 5-point scale rating to 10-point
 const client = new GraphQLClient('https://graphql.anilist.co')
 
@@ -59,15 +59,6 @@ const combineLists = async (user1, user2) => {
   console.log('user1list', user1list)
   console.log('user2list', user2list)
 
-  // const combined = []
-  // for (const arr1 of user1list) {
-  //   for (const arr2 of user2list) {
-  //     if (arr1.mediaId === arr2.mediaId) {
-  //       combined.push([mediaId: arr1.mediaId, score1: arr1.score1, score2: arr2.score2])
-  //     }
-  //   }
-  // }
-
   const merged = _.merge(_.keyBy(user1list, 'mediaId'), _.keyBy(user2list, 'mediaId'))
   const combined = _.values(merged)
   for (let i = 0; i < combined.length; i++) {           // remove entries with scores from only one user
@@ -76,7 +67,9 @@ const combineLists = async (user1, user2) => {
       i--
     }
   }
-  return combined
+  const combinedEnglish = await replaceShowTitles(combined)
+  console.log('combined', combinedEnglish)
+  return combinedEnglish
 }
 
 const getShowTitle = async (showid, mediaType) => {
@@ -96,12 +89,23 @@ const getShowTitle = async (showid, mediaType) => {
     }`
 
   const data = await client.request(showTitle, variables)
-  console.log(data)
-  return data
+  console.log(data.Media.title.english)
+  return data.Media.title.english
+}
+
+const replaceShowTitles = async (combined) => {
+  for (const i of combined) {
+    let mediaTitle = await getShowTitle(i.mediaId)
+    _.assign(i, ({ title: mediaTitle }))
+    let scoreDifference = Math.abs(i.score1 - i.score2)
+    _.assign(i, ({ scoreDifference: scoreDifference }))     // calculate difference between scores and store as a property for sorting later
+  }
+
+  combined.sort((a, b) => a.scoreDifference - b.scoreDifference)  // sort by ascending order of score difference
+  return combined
 }
 
 export {
-  getShowTitle,
-  getShowList,
-  combineLists
+  combineLists,
+  getShowTitle
 }
