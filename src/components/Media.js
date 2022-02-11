@@ -1,7 +1,6 @@
 import React from 'react'
 
 const Media = ({ media, user1, user2 }) => {
-  console.log('media title', media.title)
   if(media) {
   return (
     <tr>
