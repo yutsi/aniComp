@@ -128,7 +128,8 @@ const getShowTitle = async (showid, mediaType) => {
     id: showid,
     type: mediaType
   }
-  const showTitle =
+  let showTitle
+  showTitle =
     gql`
     query getShowTitle($id: Int!, $type: MediaType)
     {
@@ -136,13 +137,14 @@ const getShowTitle = async (showid, mediaType) => {
         id
             title {
             english
+            romaji
+            native
             }
         }
     }`
-// TODO: add code for JP title if English is empty
+
   const data = await client.request(showTitle, variables)
-  console.log(data.Media.title.english)
-  return data.Media.title.english
+  return data.Media.title.english || data.Media.title.romaji || data.Media.title.native           // prioritizes English title
 }
 
 const replaceShowTitles = async (combined) => {
