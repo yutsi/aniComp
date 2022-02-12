@@ -71,16 +71,21 @@ th, td {
 }
 
 td {
-  padding-right:5px;
+  padding-left:0.2em;
+  padding-right:0.2em;
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
 }
 
-td.deleteButton {
-  border:none;
+table.media {
+  max-width: 90%;
 }
 
-.personName {
-  word-break: break-all;
+td.mediaDifference {
+  width:fit-content;
+  white-space: nowrap;
 }
+
 
 footer {
   bottom: 0;
@@ -116,4 +121,12 @@ button {
 button:hover {
   background-color: #000000;
   box-shadow: 0.1em 0.1em 0.1em 0.1em #000000;
+}
+
+h3.agree {
+
+}
+
+h3.disagree {
+
 }

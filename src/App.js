@@ -89,23 +89,23 @@ const App = () => {
               <label htmlFor='anime'>anime</label>
               <input className='radio' type='radio' id='manga' name='mediaType' value='MANGA' onChange={handleCheckedChange} />
               <label htmlFor='manga'>manga</label>
-              <button type='submit'>Compare</button>
             </div>
+            <button type='submit'>Compare</button>
           </form>
           <Error message={message} />
         </div>
 
         <div className='compare-area'>
           <h2>{user1compared} vs. {user2compared}</h2>
-          Agree
-          <table>
+          <h3 className='agree'>Agree</h3>
+          <table className='media'>
             <tbody>
               {combined.filter((media) => media.scoreDifference <= 1)
                 .map((media) => <Media key={media.mediaId} media={media} user1={user1compared} user2={user2compared} />)}
             </tbody>
           </table>
 
-          Disagree
+          <h3 className='disagree'>Disagree</h3>
           <table>
             <tbody>
               {combined.filter((media) => media.scoreDifference > 1)
