@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Notification from './components/Notification'
 import Media from './components/Media'
-import { combineLists} from './services/query'
+import { combineLists } from './services/query'
 
 const App = () => {
   const [user1, setuser1] = useState('')
@@ -67,7 +67,7 @@ const App = () => {
       <div className='content-wrap'>
         <div className='entry-area'>
           <h1>Compare media lists of two AniList users</h1>
-          <div className="description">Scores are converted to a 10-point scale.</div>
+          <div className='description'>Scores are converted to a 10-point scale.</div>
           <form className='add-table' onSubmit={compareUsers}>
             <div className='row'>
               <label htmlFor='enter user1' className='new-entry-label'>
@@ -97,16 +97,16 @@ const App = () => {
           Agree
           <table>
             <tbody>
-              {combined.filter((media) => media.scoreDifference <= 1 )
-              .map((media) => <Media key={media.mediaId} media={media} user1={user1} user2={user2} /> )}
+              {combined.filter((media) => media.scoreDifference <= 1)
+                .map((media) => <Media key={media.mediaId} media={media} user1={user1} user2={user2} />)}
             </tbody>
           </table>
 
           Disagree
           <table>
             <tbody>
-            {combined.filter((media) => media.scoreDifference > 1 )
-              .map((media) => <Media key={media.mediaId} media={media} user1={user1} user2={user2} /> )}
+              {combined.filter((media) => media.scoreDifference > 1)
+                .map((media) => <Media key={media.mediaId} media={media} user1={user1} user2={user2} />)}
             </tbody>
           </table>
         </div>
@@ -115,7 +115,7 @@ const App = () => {
         <div className='footer'>
           {// TODO: Github link here
 }
-          This website was made by yutsi using React. Check it out on <a href="https://github.com/yutsi/aniComp">Github</a>.
+          This website was made by yutsi using React. Check it out on <a href='https://github.com/yutsi/aniComp'>Github</a>.
         </div>
       </footer>
     </div>

@@ -1,6 +1,5 @@
 import { gql, GraphQLClient } from 'graphql-request'
-const _ = require("lodash")
-
+const _ = require('lodash')
 
 // TODO : make mediaType work with ANIME or MANGA, query fails using those as a string. Could just use if-else for showsQuery
 const client = new GraphQLClient('https://graphql.anilist.co')
@@ -22,29 +21,29 @@ const getScoreFormat = async (user) => {
   const data = await client.request(showsQuery, variables)
   const scoreFormat = data.User.mediaListOptions.scoreFormat
   console.log(`Score format for ${user} is ${scoreFormat}`)
-  if (scoreFormat == "POINT_10" || scoreFormat == "POINT_10_DECIMAL" ) {
+  if (scoreFormat == 'POINT_10' || scoreFormat == 'POINT_10_DECIMAL') {
     return 1
-  } 
-  if (scoreFormat == "POINT_100") {
+  }
+  if (scoreFormat == 'POINT_100') {
     return 0.1
   }
-  if (scoreFormat == "POINT_5") {
+  if (scoreFormat == 'POINT_5') {
     return 2
   }
-  if (scoreFormat == "POINT_3") {
+  if (scoreFormat == 'POINT_3') {
     return 3.33
+  }
 }
-}
-const convertScores = async (user1, user2, combined) => {                           // Convert scores to 10-point scale and round to nearest tenth
+const convertScores = async (user1, user2, combined) => { // Convert scores to 10-point scale and round to nearest tenth
   const multiplyFactor1 = await getScoreFormat(user1)
   const multiplyFactor2 = await getScoreFormat(user2)
-  if (multiplyFactor1 === 1 && multiplyFactor2 ===1) {
+  if (multiplyFactor1 === 1 && multiplyFactor2 === 1) {
     return combined
   }
   for (const i of combined) {
-    let newScore1 = i.score1 * multiplyFactor1
+    const newScore1 = i.score1 * multiplyFactor1
     _.assign(i, ({ score1: newScore1 }))
-    let newScore2 = i.score2 * multiplyFactor2
+    const newScore2 = i.score2 * multiplyFactor2
     _.assign(i, ({ score2: newScore2 }))
   }
   return combined
@@ -74,8 +73,16 @@ const getShowList = async (user, userNum) => {
 
 const flatten = async (data, userNum) => {
   const flattened = []
-  const parentArray = Object.entries(data.MediaListCollection.lists[0].entries) // Not getting stuff from Dropped list
-  parentArray.forEach(arr => {
+  const completedList = Object.entries(data.MediaListCollection.lists[0].entries) // from Completed list
+  completedList.forEach(arr => {
+    arr.filter(n => n.mediaId !== undefined).forEach(obj => { // filter out undefined entries
+      const { mediaId, score } = obj
+      flattened.push(obj)
+    })
+  })
+
+  const droppedList = Object.entries(data.MediaListCollection.lists[1].entries) // from Dropped list
+  droppedList.forEach(arr => {
     arr.filter(n => n.mediaId !== undefined).forEach(obj => { // filter out undefined entries
       const { mediaId, score } = obj
       flattened.push(obj)
@@ -102,7 +109,7 @@ const combineLists = async (user1, user2) => {
 
   const merged = _.merge(_.keyBy(user1list, 'mediaId'), _.keyBy(user2list, 'mediaId'))
   const combined = _.values(merged)
-  for (let i = 0; i < combined.length; i++) {           // remove entries with scores from only one user
+  for (let i = 0; i < combined.length; i++) { // remove entries with scores from only one user
     if (!combined[i].score1 || !combined[i].score2) {
       combined.splice(i, 1)
       i--
@@ -137,13 +144,13 @@ const getShowTitle = async (showid, mediaType) => {
 
 const replaceShowTitles = async (combined) => {
   for (const i of combined) {
-    let mediaTitle = await getShowTitle(i.mediaId)
+    const mediaTitle = await getShowTitle(i.mediaId)
     _.assign(i, ({ title: mediaTitle }))
-    let scoreDifference = Math.abs(i.score1 - i.score2)
-    _.assign(i, ({ scoreDifference: scoreDifference }))     // calculate difference between scores and store as a property for sorting later
+    const scoreDifference = Math.abs(i.score1 - i.score2)
+    _.assign(i, ({ scoreDifference: scoreDifference })) // calculate difference between scores and store as a property for sorting later
   }
 
-  combined.sort((a, b) => a.scoreDifference - b.scoreDifference)  // sort by ascending order of score difference
+  combined.sort((a, b) => a.scoreDifference - b.scoreDifference) // sort by ascending order of score difference
   return combined
 }
 
