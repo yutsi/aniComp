@@ -109,7 +109,7 @@ const App = () => {
           <table>
             <tbody>
               {combined.filter((media) => media.scoreDifference > 1)
-                .map((media) => <Media key={media.mediaId} media={media} user1={user1} user2={user2} />)}
+                .map((media) => <Media key={media.mediaId} media={media} user1={user1compared} user2={user2compared} />)}
             </tbody>
           </table>
         </div>
