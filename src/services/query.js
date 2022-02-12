@@ -41,9 +41,9 @@ const convertScores = async (user1, user2, combined) => { // Convert scores to 1
     return combined
   }
   for (const i of combined) {
-    const newScore1 = i.score1 * multiplyFactor1
+    const newScore1 = Math.round(i.score1 * multiplyFactor1 * 10) / 10
     _.assign(i, ({ score1: newScore1 }))
-    const newScore2 = i.score2 * multiplyFactor2
+    const newScore2 = Math.round(i.score2 * multiplyFactor2 * 10) / 10
     _.assign(i, ({ score2: newScore2 }))
   }
   return combined
