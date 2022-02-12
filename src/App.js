@@ -81,21 +81,21 @@ const App = () => {
               <label htmlFor='enter user1' className='new-entry-label'>
                 user 1:
               </label>
-              <input name='enter user1' className='new-entry' onChange={handleUser1Change} />
+              <input type='text' id='enter user1' aria-label='enter user1' className='new-entry' onChange={handleUser1Change} />
             </div>
             <div className='row'>
               <label htmlFor='enter user2' className='new-entry-label'>
                 user 2:
               </label>
-              <input name='enter user2' className='new-entry' onChange={handleUser2Change} />
+              <input type='text' id='enter user2' aria-label='enter user2' className='new-entry' onChange={handleUser2Change} />
             </div>
             <div className='row'>
               <input className='radio' type='radio' id='anime' name='mediaType' value='ANIME' checked={checked} onChange={handleCheckedChange} />
               <label htmlFor='anime'>anime</label>
-              <input className='radio' type='radio' id='manga' name='mediaType' value='MANGA' onChange={handleCheckedChange} />
+              <input className='radio' type='radio' id='manga' name='mediaType' value='MANGA' checked={!checked} onChange={handleCheckedChange} />
               <label htmlFor='manga'>manga</label>
-            </div>
-            <button type='submit'>Compare</button>
+            </div><label htmlFor='submit'>
+            <button type='submit' id='submit' aria-label='submit'>Compare</button></label>
           </form>
           <Error message={message} />
         </div>
@@ -103,7 +103,7 @@ const App = () => {
         <div className='compare-area'>
           <h2>{user1compared || 'user1'} vs. {user2compared || 'user2'}</h2>
           <h3 className='agree'>Agree</h3>
-          <table className='media'>
+          <table className='media' aria-label='agree-media'>
             <tbody>
               {combined.filter((media) => media.scoreDifference <= 1)
                 .map((media) => <Media key={media.mediaId} media={media} user1={user1compared} user2={user2compared} />)}
@@ -111,7 +111,7 @@ const App = () => {
           </table>
 
           <h3 className='disagree'>Disagree</h3>
-          <table>
+          <table className='media' aria-label='disagree-media'>
             <tbody>
               {combined.filter((media) => media.scoreDifference > 1)
                 .map((media) => <Media key={media.mediaId} media={media} user1={user1compared} user2={user2compared} />)}
