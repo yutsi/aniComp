@@ -30,12 +30,8 @@ code {
   }
 }
 
-.entry-area, .number-area {
+.entry-area, .compare-area {
   width: 50%;
-}
-
-.entry-area {
-  max-width: 400px;
 }
 
 .add-table {
@@ -62,7 +58,6 @@ label.new-entry-label {
 
 .error {
   color: #d25852;
-
   width: fit-content;
 }
 
@@ -77,15 +72,10 @@ td {
   padding-bottom: 0.1em;
 }
 
-table.media {
-  max-width: 90%;
-}
-
 td.mediaDifference {
   white-space: nowrap;
   word-break: break-all;
 }
-
 
 footer {
   bottom: 0;
