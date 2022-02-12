@@ -103,8 +103,20 @@ const flatten = async (data, userNum) => {
 }
 
 const combineLists = async (user1, user2, mediaType) => {
-  const user1list = await getShowList(user1, 1, mediaType)
-  const user2list = await getShowList(user2, 2, mediaType)
+  let user1list
+  let user2list
+  try {
+  user1list = await getShowList(user1, 1, mediaType)
+  } catch (err) {
+    console.log(err)
+    return `${user1} is not a valid username.`
+  }
+  try {
+  user2list = await getShowList(user2, 2, mediaType)
+  } catch (err) {
+    console.log(err)
+    return `${user2} is not a valid username.`
+  }
 
   console.log('user1list', user1list)
   console.log('user2list', user2list)

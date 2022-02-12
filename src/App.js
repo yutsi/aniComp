@@ -55,8 +55,13 @@ const App = () => {
     let data
     try {
     data = await combineLists(user1, user2, mediaType)
+    if (data.includes('is not a valid username')) {
+      setMessage(data)
+      return
+    }
+
     } catch (err) {
-      setMessage('Invalid username entered.')
+      setMessage(err)
       return
     }
     setuser1compared(user1)
