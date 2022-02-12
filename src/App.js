@@ -53,13 +53,16 @@ const App = () => {
   const compareUsers = async (event) => {
     event.preventDefault()
     console.log(`Comparing ${user1} and ${user2}`)
-    await combineLists(user1, user2).then(data => {
-      setcombined(data)
-    })
-      .catch((err) => {
-        setMessage(err)
-        setErrorBool(true)
-      })
+    let data
+    try {
+    data = await combineLists(user1, user2)
+    } catch (err) {
+      setMessage('Invalid username entered.')
+      setErrorBool(true)
+      return
+    }
+    setcombined(data)
+
   }
 
   return (
