@@ -49,14 +49,15 @@ const convertScores = async (user1, user2, combined) => { // Convert scores to 1
   return combined
 }
 
-const getShowList = async (user, userNum) => {
+const getShowList = async (user, userNum, mediaType) => {
   const variables = {
-    userName: user
+    userName: user,
+    type: mediaType
   }
   const showsQuery = gql`
-    query getShowList($userName: String!)
+    query getShowList($userName: String!, $type: MediaType)
     {
-        MediaListCollection (userName:$userName, type:ANIME) {
+        MediaListCollection (userName:$userName, type:$type) {
             lists {
             entries {
               mediaId
@@ -67,6 +68,7 @@ const getShowList = async (user, userNum) => {
     }`
 
   const data = await client.request(showsQuery, variables)
+  console.log('data, ', data)
   const userShowsArray = await flatten(data, userNum)
   return userShowsArray
 }
@@ -100,9 +102,9 @@ const flatten = async (data, userNum) => {
   return flattenedResult
 }
 
-const combineLists = async (user1, user2) => {
-  const user1list = await getShowList(user1, 1)
-  const user2list = await getShowList(user2, 2)
+const combineLists = async (user1, user2, mediaType) => {
+  const user1list = await getShowList(user1, 1, mediaType)
+  const user2list = await getShowList(user2, 2, mediaType)
 
   console.log('user1list', user1list)
   console.log('user2list', user2list)
@@ -123,20 +125,21 @@ const combineLists = async (user1, user2) => {
 
 const getShowTitle = async (showid, mediaType) => {
   const variables = {
-    id: showid
+    id: showid,
+    type: mediaType
   }
   const showTitle =
     gql`
-    query getShowTitle($id: Int!)
+    query getShowTitle($id: Int!, $type: MediaType)
     {
-        Media (id: $id, type: ANIME) {
+        Media (id: $id, type:$type) {
         id
             title {
             english
             }
         }
     }`
-
+// TODO: add code for JP title if English is empty
   const data = await client.request(showTitle, variables)
   console.log(data.Media.title.english)
   return data.Media.title.english

@@ -82,8 +82,8 @@ table.media {
 }
 
 td.mediaDifference {
-  width:fit-content;
   white-space: nowrap;
+  word-break: break-all;
 }
 
 

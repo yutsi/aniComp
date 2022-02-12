@@ -54,7 +54,7 @@ const App = () => {
     console.log(`Comparing ${user1} and ${user2}`)
     let data
     try {
-    data = await combineLists(user1, user2)
+    data = await combineLists(user1, user2, mediaType)
     } catch (err) {
       setMessage('Invalid username entered.')
       return
