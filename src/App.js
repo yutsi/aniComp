@@ -6,6 +6,8 @@ import { combineLists } from './services/query'
 const App = () => {
   const [user1, setuser1] = useState('')
   const [user2, setuser2] = useState('')
+  const [user1compared, setuser1compared] = useState('')
+  const [user2compared, setuser2compared] = useState('')
   const [combined, setcombined] = useState([])
   const [checked, setchecked] = useState(true)
   const [mediaType, setmediaType] = useState('ANIME')
@@ -52,6 +54,7 @@ const App = () => {
 
   const compareUsers = async (event) => {
     event.preventDefault()
+    if (!verifyUserName(user1) || !verifyUserName(user2)) {return}
     console.log(`Comparing ${user1} and ${user2}`)
     let data
     try {
@@ -61,6 +64,8 @@ const App = () => {
       setErrorBool(true)
       return
     }
+    setuser1compared(user1)
+    setuser2compared(user2)
     setcombined(data)
 
   }
@@ -96,12 +101,12 @@ const App = () => {
         </div>
 
         <div className='compare-area'>
-          <h2>{user1} vs. {user2}</h2>
+          <h2>{user1compared} vs. {user2compared}</h2>
           Agree
           <table>
             <tbody>
               {combined.filter((media) => media.scoreDifference <= 1)
-                .map((media) => <Media key={media.mediaId} media={media} user1={user1} user2={user2} />)}
+                .map((media) => <Media key={media.mediaId} media={media} user1={user1compared} user2={user2compared} />)}
             </tbody>
           </table>
 
