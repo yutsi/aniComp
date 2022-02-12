@@ -66,11 +66,6 @@ label.new-entry-label {
   width: fit-content;
 }
 
-.success {
-  color: #00d46a;
-  width: fit-content;
-}
-
 th, td {
   border:1px solid #d3d3d3;
 }

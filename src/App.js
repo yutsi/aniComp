@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Notification from './components/Notification'
+import Error from './components/Error'
 import Media from './components/Media'
 import { combineLists } from './services/query'
 
@@ -12,13 +12,11 @@ const App = () => {
   const [checked, setchecked] = useState(true)
   const [mediaType, setmediaType] = useState('ANIME')
   const [message, setMessage] = useState(null)
-  const [errorBool, setErrorBool] = useState(false)
 
   useEffect(() => { // clear message after 5 seconds
     console.log('clearing message')
     const timer = setTimeout(() => {
       setMessage(null)
-      setErrorBool(false)
     }, 5000)
     return () => clearTimeout(timer)
   }, [message])
@@ -39,12 +37,10 @@ const App = () => {
   const verifyUserName = (nameInput) => {
     if (!nameInput) {
       setMessage('Please enter two usernames.')
-      setErrorBool(true)
       return false
     }
     if (nameInput.length > 100) {
       setMessage('Username must be under 100 characters.')
-      setErrorBool(true)
       return false
     }
 
@@ -61,7 +57,6 @@ const App = () => {
     data = await combineLists(user1, user2)
     } catch (err) {
       setMessage('Invalid username entered.')
-      setErrorBool(true)
       return
     }
     setuser1compared(user1)
@@ -97,7 +92,7 @@ const App = () => {
               <button type='submit'>Compare</button>
             </div>
           </form>
-          <Notification message={message} isError={errorBool} />
+          <Error message={message} />
         </div>
 
         <div className='compare-area'>
