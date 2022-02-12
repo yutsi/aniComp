@@ -96,7 +96,7 @@ const App = () => {
         </div>
 
         <div className='compare-area'>
-          <h2>{user1compared} vs. {user2compared}</h2>
+          <h2>{user1compared || 'user1'} vs. {user2compared || 'user2'}</h2>
           <h3 className='agree'>Agree</h3>
           <table className='media'>
             <tbody>
