@@ -32,3 +32,29 @@ test('enter valid users and get non-empty comparison list', async () => {
 
   await waitFor(() => expect(agreeMedia).not.toBeEmptyDOMElement())
 })
+
+test('click compare without entering usernames, get error', () => {
+  render(<App />)
+  const submit = screen.getByRole('button', {name: 'submit'})
+  const error = screen.getByText('placeholder')
+
+  userEvent.click(submit)
+
+  expect(error).toHaveTextContent('Please enter two usernames.')
+
+
+})
+
+test('click compare with invalid user1, get error', async () => {
+  render(<App />)
+  const user1 = screen.getByRole('textbox', {name: 'enter user1'})
+  const user2 = screen.getByRole('textbox', {name: 'enter user2'})
+  const submit = screen.getByRole('button', {name: 'submit'})
+
+  userEvent.type(user1, 'a')
+  userEvent.type(user2, 'bokunodom')
+  userEvent.click(submit)
+
+  await waitFor(() => expect(error).toHaveTextContent('a is not a valid username.')) 
+
+})
