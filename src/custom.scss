@@ -1,0 +1,22 @@
+@import "cyborg/variables";
+@import "bootstrap/scss/bootstrap";
+@import "cyborg/bootswatch";
+
+$link-color: #ffffff;
+
+.about {
+    @include font-size(20px);
+    line-height: 1.8;
+  }
+//Responsive Font Size
+@media (max-width: 600px) {
+    .about {
+        @include font-size(16px);
+        line-height: 1.6
+      }
+}
+
+
+@import "cyborg/variables";
+@import "bootstrap/scss/bootstrap";
+@import "cyborg/bootswatch";
