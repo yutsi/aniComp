@@ -6,7 +6,7 @@ import { combineLists } from './services/ops'
 const App = () => {
   const [user1, setuser1] = useState('')
   const [user2, setuser2] = useState('')
-  const [user1compared, setuser1compared] = useState('')
+  const [user1compared, setuser1compared] = useState('') // separate state from the input box for the comparison table's header
   const [user2compared, setuser2compared] = useState('')
   const [combined, setcombined] = useState([])
   const [checked, setchecked] = useState(true) // "anime" checkbox is default

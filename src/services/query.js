@@ -82,7 +82,7 @@ const getShowTitle = async (showid, mediaType) => {
   return data.Media.title.english || data.Media.title.romaji || data.Media.title.native // prioritizes English title
 }
 
-/*
+// TODO: display stat comparison with top 3 genres
 const getUserAnimeStats = async (user) => {
   const variables = {
     userName: user
@@ -95,6 +95,10 @@ const getUserAnimeStats = async (user) => {
             anime {
               minutesWatched
               count
+              genres (sort:COUNT_DESC) {
+                genre
+                minutesWatched
+              }
             }
           }
         }
@@ -102,10 +106,8 @@ const getUserAnimeStats = async (user) => {
     }`
 
   const data = await client.request(showsQuery, variables)
-  console.log(`${user} anime stats: ${data}`)
+  console.log(`${user} anime stats: `, data)
 }
-
-*/
 
 export {
   getShowList,
