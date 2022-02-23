@@ -106,13 +106,13 @@ const combineLists = async (user1, user2, mediaType) => {
   let user1list
   let user2list
   try {
-  user1list = await getShowList(user1, 1, mediaType)
+    user1list = await getShowList(user1, 1, mediaType)
   } catch (err) {
     console.log(err)
     return `${user1} is not a valid username.`
   }
   try {
-  user2list = await getShowList(user2, 2, mediaType)
+    user2list = await getShowList(user2, 2, mediaType)
   } catch (err) {
     console.log(err)
     return `${user2} is not a valid username.`
@@ -156,7 +156,7 @@ const getShowTitle = async (showid, mediaType) => {
     }`
 
   const data = await client.request(showTitle, variables)
-  return data.Media.title.english || data.Media.title.romaji || data.Media.title.native           // prioritizes English title
+  return data.Media.title.english || data.Media.title.romaji || data.Media.title.native // prioritizes English title
 }
 
 const replaceShowTitles = async (combined) => {

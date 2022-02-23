@@ -50,16 +50,15 @@ const App = () => {
 
   const compareUsers = async (event) => {
     event.preventDefault()
-    if (!verifyUserName(user1) || !verifyUserName(user2)) {return}
+    if (!verifyUserName(user1) || !verifyUserName(user2)) { return }
     console.log(`Comparing ${user1} and ${user2}`)
     let data
     try {
-    data = await combineLists(user1, user2, mediaType)
-    if (data.includes('is not a valid username')) {
-      setMessage(data)
-      return
-    }
-
+      data = await combineLists(user1, user2, mediaType)
+      if (data.includes('is not a valid username')) {
+        setMessage(data)
+        return
+      }
     } catch (err) {
       setMessage(err)
       return
@@ -67,7 +66,6 @@ const App = () => {
     setuser1compared(user1)
     setuser2compared(user2)
     setcombined(data)
-
   }
 
   return (
@@ -95,7 +93,8 @@ const App = () => {
               <input className='radio' type='radio' id='manga' name='mediaType' value='MANGA' checked={!checked} onChange={handleCheckedChange} />
               <label htmlFor='manga'>manga</label>
             </div><label htmlFor='submit'>
-            <button type='submit' id='submit' aria-label='submit'>Compare</button></label>
+              <button type='submit' id='submit' aria-label='submit'>Compare</button>
+            </label>
           </form>
           <Error message={message} />
         </div>
