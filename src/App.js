@@ -92,9 +92,10 @@ const App = () => {
               <label htmlFor='anime'>anime</label>
               <input className='radio' type='radio' id='manga' name='mediaType' value='MANGA' checked={!checked} onChange={handleCheckedChange} />
               <label htmlFor='manga'>manga</label>
-            </div><label htmlFor='submit'>
+            </div>
+            <label htmlFor='submit'>
               <button type='submit' id='submit' aria-label='submit'>Compare</button>
-                  </label>
+            </label>
           </form>
           <Error message={message} />
         </div>
