@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Error from './components/Error'
 import Media from './components/Media'
-import { combineLists } from './services/query'
+import { combineLists } from './services/ops'
 
 const App = () => {
   const [user1, setuser1] = useState('')
@@ -9,7 +9,7 @@ const App = () => {
   const [user1compared, setuser1compared] = useState('')
   const [user2compared, setuser2compared] = useState('')
   const [combined, setcombined] = useState([])
-  const [checked, setchecked] = useState(true)
+  const [checked, setchecked] = useState(true) // "anime" checkbox is default
   const [mediaType, setmediaType] = useState('ANIME')
   const [message, setMessage] = useState(null)
 
