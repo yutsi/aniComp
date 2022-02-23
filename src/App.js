@@ -94,7 +94,7 @@ const App = () => {
               <label htmlFor='manga'>manga</label>
             </div><label htmlFor='submit'>
               <button type='submit' id='submit' aria-label='submit'>Compare</button>
-            </label>
+                  </label>
           </form>
           <Error message={message} />
         </div>
@@ -120,8 +120,6 @@ const App = () => {
       </div>
       <footer>
         <div className='footer'>
-          {// TODO: Github link here
-}
           This website was made by yutsi using React and the AniList API. Check it out on <a href='https://github.com/yutsi/aniComp'>Github</a>.
         </div>
       </footer>
