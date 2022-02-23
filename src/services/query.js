@@ -140,8 +140,7 @@ const getShowTitle = async (showid, mediaType) => {
     id: showid,
     type: mediaType
   }
-  let showTitle
-  showTitle =
+  const showTitle =
     gql`
     query getShowTitle($id: Int!, $type: MediaType)
     {
