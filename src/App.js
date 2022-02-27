@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Error from './components/Error'
 import Media from './components/Media'
 import { combineLists } from './services/ops'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap'
 import './custom.scss'
 
 const App = () => {
@@ -11,6 +11,7 @@ const App = () => {
   const [user1compared, setuser1compared] = useState('') // separate state from the input box for the comparison table's header
   const [user2compared, setuser2compared] = useState('')
   const [combined, setcombined] = useState([])
+  const [loading, setloading] = useState(false)
   const [checked, setchecked] = useState(true) // "anime" checkbox is default
   const [mediaType, setmediaType] = useState('ANIME')
   const [message, setMessage] = useState(null)
@@ -52,6 +53,7 @@ const App = () => {
 
   const compareUsers = async (event) => {
     event.preventDefault()
+    await setloading(true)
     if (!verifyUserName(user1) || !verifyUserName(user2)) { return }
     console.log(`Comparing ${user1} and ${user2}`)
     let data
@@ -62,65 +64,69 @@ const App = () => {
         return
       }
     } catch (err) {
+      setloading(false)
       setMessage(err)
       return
     }
     setuser1compared(user1)
     setuser2compared(user2)
     setcombined(data)
+    setloading(false)
   }
 
   return (
-    <Container fluid>
+    <Container>
       <Row>
-        <h1>Compare media lists of two AniList users</h1>
-        <div className='description'>Scores are converted to a 10-point scale.</div>
-        <form className='add-table' onSubmit={compareUsers}>
-          <div className='row'>
-            <label htmlFor='enter user1' className='new-entry-label'>
-              user 1:
-            </label>
-            <input type='text' id='enter user1' aria-label='enter user1' className='new-entry' onChange={handleUser1Change} />
-          </div>
-          <div className='row'>
-            <label htmlFor='enter user2' className='new-entry-label'>
-              user 2:
-            </label>
-            <input type='text' id='enter user2' aria-label='enter user2' className='new-entry' onChange={handleUser2Change} />
-          </div>
-          <div className='row'>
-            <input className='radio' type='radio' id='anime' name='mediaType' value='ANIME' checked={checked} onChange={handleCheckedChange} />
-            <label htmlFor='anime'>anime</label>
-            <input className='radio' type='radio' id='manga' name='mediaType' value='MANGA' checked={!checked} onChange={handleCheckedChange} />
-            <label htmlFor='manga'>manga</label>
-          </div>
-          <label htmlFor='submit'>
-            <button type='submit' id='submit' aria-label='submit'>Compare</button>
-          </label>
-        </form>
-        <Error message={message} />
-      </Row>
+        <Col lg={4}>
+          <h1>Compare media lists of two AniList users</h1>
+          <div className='description'>Scores are converted to a 10-point scale.</div>
+          <Form onSubmit={compareUsers}>
+            <Form.Group as={Row} controlId='enter-user1' className='pt-3'>
+              <Form.Label column xs={2} md={3} className='text-nowrap'>
+                user 1:
+              </Form.Label>
+              <Col xs={5}>
+                <Form.Control onChange={handleUser1Change} />
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row} controlId='enter-user2' className='pt-3'>
+              <Form.Label column xs={2} md={3} className='text-nowrap'>
+                user 2:
+              </Form.Label>
+              <Col xs={5}>
+                <Form.Control onChange={handleUser2Change} />
+              </Col>
+            </Form.Group>
+            <Form.Group>
+              <Form.Check type='radio' label='anime' checked={checked} onChange={handleCheckedChange} />
+              <Form.Check type='radio' label='manga' checked={!checked} onChange={handleCheckedChange} />
+            </Form.Group>
+            <Button variant='primary' disabled={loading} type='submit' id='submit' aria-label='submit'>{loading ? 'Comparing' : 'Compare'}</Button>
+          </Form>
+          <Error message={message} />
+        </Col>
+        <Col md={6}>
+          <h2>{user1compared || 'user1'} vs. {user2compared || 'user2'}</h2>
+          <h3 className='agree'>Agree</h3>
+          <Table aria-label='agree-media' bordered hover className='w-auto'>
+            <tbody>
+              {combined.filter((media) => media.scoreDifference <= 1)
+                .map((media) => <Media key={media.mediaId} media={media} user1={user1compared} user2={user2compared} />)}
+            </tbody>
+          </Table>
 
-      <Row>
-        <h2>{user1compared || 'user1'} vs. {user2compared || 'user2'}</h2>
-        <h3 className='agree'>Agree</h3>
-        <table className='media' aria-label='agree-media'>
-          <tbody>
-            {combined.filter((media) => media.scoreDifference <= 1)
-              .map((media) => <Media key={media.mediaId} media={media} user1={user1compared} user2={user2compared} />)}
-          </tbody>
-        </table>
-
-        <h3 className='disagree'>Disagree</h3>
-        <table className='media' aria-label='disagree-media'>
-          <tbody>
-            {combined.filter((media) => media.scoreDifference > 1)
-              .map((media) => <Media key={media.mediaId} media={media} user1={user1compared} user2={user2compared} />)}
-          </tbody>
-        </table>
+          <h3 className='disagree'>Disagree</h3>
+          <Table aria-label='disagree-media' bordered hover className='w-auto'>
+            <tbody>
+              {combined.filter((media) => media.scoreDifference > 1)
+                .map((media) => <Media key={media.mediaId} media={media} user1={user1compared} user2={user2compared} />)}
+            </tbody>
+          </Table>
+        </Col>
       </Row>
-      <Row>
-        This website was made by yutsi using React and the AniList API. Check it out on <a href='https://github.com/yutsi/aniComp'>Github</a>.
+      <Row className='pb-2'>
+        <Col className='justify-content-center pt-5'>This website was made by yutsi using <a href='https://react-bootstrap.github.io/' className='link-dark'>React-Bootstrap</a> and the <a href='https://bootswatch.com/cyborg/' className='link-dark'>Cyborg</a> theme with the <a href='https://anilist.gitbook.io/anilist-apiv2-docs/'>AniList API</a>. Check it out on <a href='https://github.com/yutsi/aniComp'>Github</a>.
+        </Col>
       </Row>
     </Container>
   )

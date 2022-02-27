@@ -4,16 +4,22 @@
 
 $link-color: #ffffff;
 
-.about {
-    @include font-size(20px);
-    line-height: 1.8;
-  }
 //Responsive Font Size
-@media (max-width: 600px) {
-    .about {
-        @include font-size(16px);
-        line-height: 1.6
-      }
+h1 {
+  @include font-size(1.3rem);
+  }
+h2 {
+  @include font-size(1.1rem);
+}
+
+
+td.mediaDifference {
+  white-space: nowrap;
+  word-break: break-all;
+}
+
+a {
+  display:inline;
 }
 
 
