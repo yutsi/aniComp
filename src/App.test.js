@@ -11,8 +11,8 @@ import App from './App'
 
 test('clicking manga checks box', () => {
   render(<App />)
-  const anime = screen.getByRole('radio', { name: 'anime' })
-  const manga = screen.getByRole('radio', { name: 'manga' })
+  const anime = screen.getByLabelText('anime')
+  const manga = screen.getByLabelText('manga')
   expect(anime).toBeChecked()
   userEvent.click(manga)
   expect(anime).not.toBeChecked()
