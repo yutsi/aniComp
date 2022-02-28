@@ -53,7 +53,7 @@ const App = () => {
 
   const compareUsers = async (event) => {
     event.preventDefault()
-    await setloading(true)
+    setloading(true)
     if (!verifyUserName(user1) || !verifyUserName(user2)) { return }
     console.log(`Comparing ${user1} and ${user2}`)
     let data
@@ -111,7 +111,7 @@ const App = () => {
           <Table aria-label='agree-media' bordered hover className='w-auto'>
             <tbody>
               {combined.filter((media) => media.scoreDifference <= 1)
-                .map((media) => <Media key={media.mediaId} media={media} user1={user1compared} user2={user2compared} />)}
+                .map((media) => <Media key={media.mediaId} media={media} user1={user1compared} user2={user2compared} mediaType={mediaType} />)}
             </tbody>
           </Table>
 
@@ -119,7 +119,7 @@ const App = () => {
           <Table aria-label='disagree-media' bordered hover className='w-auto'>
             <tbody>
               {combined.filter((media) => media.scoreDifference > 1)
-                .map((media) => <Media key={media.mediaId} media={media} user1={user1compared} user2={user2compared} />)}
+                .map((media) => <Media key={media.mediaId} media={media} user1={user1compared} user2={user2compared} mediaType={mediaType} />)}
             </tbody>
           </Table>
         </Col>

@@ -1,10 +1,12 @@
 import React from 'react'
-
-const Media = ({ media, user1, user2 }) => {
+// add link to show
+const Media = ({ media, user1, user2, mediaType }) => {
+  const mediaTypeLower = mediaType.toLowerCase()
+  const URL = `https://anilist.co/${mediaTypeLower}/${media.mediaId}`
   if (media) {
     return (
       <tr>
-        <td className='mediaTitle'>{media.title}</td>
+        <td className='mediaTitle'><a href={URL}>{media.title}</a></td>
         <td className='mediaDifference'>{user1}: {media.score1} <br /> {user2}: {media.score2}</td>
       </tr>
     )
