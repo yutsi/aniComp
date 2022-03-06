@@ -6,7 +6,7 @@ const Media = ({ media, user1, user2, mediaType }) => {
   if (media) {
     return (
       <tr>
-        <td className='mediaTitle'><a href={URL}>{media.title}</a></td>
+        <td className='mediaTitle'><a href={URL} target='_blank' rel='noreferrer'>{media.title}</a></td>
         <td className='mediaDifference'>{user1}: {media.score1} <br /> {user2}: {media.score2}</td>
       </tr>
     )
