@@ -1,5 +1,5 @@
 import React from 'react'
-// add link to show
+
 const Media = ({ media, user1, user2, mediaType }) => {
   const mediaTypeLower = mediaType.toLowerCase()
   const URL = `https://anilist.co/${mediaTypeLower}/${media.mediaId}`

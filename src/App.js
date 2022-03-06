@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Error from './components/Error'
 import Media from './components/Media'
+import UsernamesHeader from './components/Usernames header'
 import { combineLists } from './services/ops'
 import { Container, Row, Col, Form, Button, Table } from 'react-bootstrap'
 import './custom.scss'
@@ -99,15 +100,15 @@ const App = () => {
               </Col>
             </Form.Group>
             <Form.Group>
-              <Form.Check type='radio' label='anime' checked={checked} onChange={handleCheckedChange} />
-              <Form.Check type='radio' label='manga' checked={!checked} onChange={handleCheckedChange} />
+              <Form.Check type='radio' label='anime' value='ANIME' checked={checked} onChange={handleCheckedChange} />
+              <Form.Check type='radio' label='manga' value='MANGA' checked={!checked} onChange={handleCheckedChange} />
             </Form.Group>
             <Button variant='primary' disabled={loading} type='submit' id='submit' aria-label='submit'>{loading ? 'Comparing' : 'Compare'}</Button>
           </Form>
           <Error message={message} />
         </Col>
         <Col md={6}>
-          <h2>{user1compared || 'user1'} vs. {user2compared || 'user2'}</h2>
+          <UsernamesHeader user1={user1compared} user2={user2compared} />
           <h3 className='agree'>Agree</h3>
           <Table aria-label='agree-media' bordered hover className='w-auto'>
             <tbody>
