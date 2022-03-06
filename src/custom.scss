@@ -20,9 +20,11 @@ td.mediaDifference {
 
 a {
   display:inline;
-  text-decoration:none;
 }
 
+a:link, a:visited {
+  text-underline-offset: 0.1em;
+}
 
 @import "cyborg/variables";
 @import "bootstrap/scss/bootstrap";
