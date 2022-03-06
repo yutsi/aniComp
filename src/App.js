@@ -60,6 +60,7 @@ const App = () => {
     try {
       data = await combineLists(user1, user2, mediaType)
       if (data.includes('is not a valid username')) {
+        setloading(false)
         setMessage(data)
         return
       }
