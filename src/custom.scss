@@ -26,6 +26,10 @@ a:link, a:visited {
   text-underline-offset: 0.1em;
 }
 
+a.username-header {
+  text-decoration: none;
+}
+
 @import "cyborg/variables";
 @import "bootstrap/scss/bootstrap";
 @import "cyborg/bootswatch";
